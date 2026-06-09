@@ -297,6 +297,7 @@ kubectl scale deployment web-deployment --replicas=3
 ```bash
 # Changer l'image nginx vers une version spécifique
 kubectl set image deployment/web-deployment nginx=nginx:1.21
+kubectl annotate deployment/web-deployment kubernetes.io/change-cause: "raison du changement: initial deployment" 
 
 # Observer le rolling update
 kubectl rollout status deployment web-deployment

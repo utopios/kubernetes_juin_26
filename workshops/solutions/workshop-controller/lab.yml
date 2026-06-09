@@ -4,6 +4,9 @@ metadata:
   name: web-deployment
   labels:
     app: nginx
+  annotations:
+    description: "Déploiement d'une application web avec Nginx"
+    kubernetes.io/change-cause: "raison du changement: initial deployment"
 spec:
   replicas: 4
   selector:
@@ -16,7 +19,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest
+        image: nginx:1.22
         ports:
         - containerPort: 80
 
