@@ -1,0 +1,66 @@
+# pod-init-demo.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-avec-init
+spec:
+  # Conteneurs d'initialisation (s'exécutent avant les conteneurs principaux)
+  initContainers:
+  - name: setup-config
+    image: busybox
+    command:
+    - sh
+    - -c
+    - |
+      echo "=== Préparation de la configuration ==="
+      echo "app_name=MonApp" > /shared/config.txt
+      echo "version=1.0" >> /shared/config.txt
+      echo "env=development" >> /shared/config.txt
+      echo "Configuration créée avec succès !"
+    volumeMounts:
+    - name: config-volume
+      mountPath: /shared
+  
+  - name: setup-data
+    image: busybox
+    command:
+    - sh
+    - -c
+    - |
+      echo "=== Préparation des données ==="
+      mkdir -p /data/users
+      echo "user1,Alice,alice@example.com" > /data/users/users.csv
+      echo "user2,Bob,bob@example.com" >> /data/users/users.csv
+      echo "Données créées avec succès !"
+    volumeMounts:
+    - name: data-volume
+      mountPath: /data
+  
+  # Conteneurs principaux (s'exécutent après les init containers)
+  containers:
+  - name: main-application
+    image: busybox
+    command:
+    - sh
+    - -c
+    - |
+      echo "=== Démarrage de l'application ==="
+      echo "Configuration trouvée :"
+      cat /app/config/config.txt
+      echo ""
+      echo "Données trouvées :"
+      cat /app/data/users/users.csv
+      echo ""
+      echo "Application démarrée avec succès !"
+      while true; do sleep 30; done
+    volumeMounts:
+    - name: config-volume
+      mountPath: /app/config
+    - name: data-volume
+      mountPath: /app/data
+  
+  volumes:
+  - name: config-volume
+    emptyDir: {}
+  - name: data-volume
+    emptyDir: {}
