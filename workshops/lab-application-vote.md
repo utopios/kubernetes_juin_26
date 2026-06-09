@@ -38,17 +38,17 @@ Déployer une application de vote complète sur GKE en utilisant uniquement des 
 ## Architecture de l'application
 
 **Frontend (Interfaces utilisateur) :**
-- `mohamed1780/vote-ui:v1` : Interface web pour voter
-- `mohamed1780/result-ui:v1` : Interface web pour voir les résultats
+- `public.ecr.aws/i9j5u1r0/vote-ui` : Interface web pour voter
+- `public.ecr.aws/i9j5u1r0/result-ui` : Interface web pour voir les résultats
 
 **Backend (APIs) :**
-- `mohamed1780/vote:v1` : API qui gère les votes
-- `mohamed1780/result:v1` : API qui affiche les résultats
+- `public.ecr.aws/i9j5u1r0/vote` : API qui gère les votes
+- `public.ecr.aws/i9j5u1r0/result` : API qui affiche les résultats
 
 **Services de données :**
-- `mohamed1780/worker:v1` : Service qui transfère les votes de Redis vers PostgreSQL
-- `redis:alpine` : Base de données temporaire (stockage des votes)
-- `postgres:15-alpine` : Base de données permanente (résultats finaux)
+- `public.ecr.aws/i9j5u1r0/worker` : Service qui transfère les votes de Redis vers PostgreSQL
+- `public.ecr.aws/i9j5u1r0/redis:alpine` : Base de données temporaire (stockage des votes)
+- `public.ecr.aws/i9j5u1r0/postgres:15-alpine` : Base de données permanente (résultats finaux)
 
 ## Flux de données
 
