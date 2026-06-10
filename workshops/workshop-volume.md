@@ -80,9 +80,9 @@ apiVersion: storage.k8S.io/v1
 kind: StorageClass
 metadata:
   name: standard-rwo
-provisioner: rancher.io/local-path
+provisioner: k8s.io/minikube-hostpath
 reclaimPolicy: Delete
-volumeBindingMode: WaitForFirstCustomer
+# volumeBindingMode: WaitForFirstConsumer
 ```
 
 ### 3.1 PersistentVolumeClaim pour MySQL
