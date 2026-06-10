@@ -17,7 +17,7 @@ Déployer une application de vote complète sur GKE en utilisant uniquement des 
 ┌─────────▼───────┐    ┌─────────▼───────┐
 │   VOTE API      │    │   RESULT API    │
 │ (backend vote)  │    │ (backend result)│
-│ Port: 80        │    │ Port: 80        │
+│ Port: 5000      │    │ Port: 5000      │
 └─────────┬───────┘    └─────────▲───────┘
           │                      │
           │ Redis                │ PostgreSQL
