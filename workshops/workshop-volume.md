@@ -354,7 +354,7 @@ data:
   username: YWRtaW4=        # admin en base64
   password: cGFzc3dvcmQxMjM= # password123 en base64
   config.properties: |
-    ZGJfdXJsPWpkYmM6bXlzcWw6Ly9teXNxbC1zZXJ2aWNlOjMzMDYvdGVzdGRiCmRiX3VzZXI9YWRtaW4KZGJ fcGFzc3dvcmQ9cGFzc3dvcmQxMjM=
+    ZGJfdXJsPWpkYmM6bXlzcWw6Ly9teXNxbC1zZXJ2aWNlOjMzMDYvdGVzdGRiCmRiX3VzZXI9YWRtaW4KZGJfcGFzc3dvcmQ9cGFzc3dvcmQxMjM=
   # Contenu en base64 : db_url=jdbc:mysql://mysql-service:3306/testdb\ndb_user=admin\ndb_password=password123
 ```
 
