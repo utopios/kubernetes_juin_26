@@ -72,6 +72,19 @@ kubectl exec -it nginx-emptydir -c log-reader -- cat /var/log/nginx/access.log
 
 ## Étape 3 : PersistentVolume et PersistentVolumeClaim
 
+### 3.0 Création de la classe de stockage
+
+```yaml
+# mysql-pvc.yaml
+apiVersion: storage.k8S.io/v1
+kind: StorageClass
+metadata:
+  name: standard-rwo
+provisioner: rancher.io/local-path
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstCustomer
+```
+
 ### 3.1 PersistentVolumeClaim pour MySQL
 ```yaml
 # mysql-pvc.yaml
