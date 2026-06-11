@@ -1,0 +1,35 @@
+# monitoring-values.yaml
+fullnameOverride: kps
+
+grafana:
+  adminPassword: "Workshop2026!"
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: false
+
+prometheus:
+  prometheusSpec:
+    retention: 7d
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+    # Permet à Prometheus de découvrir les ServiceMonitors
+    # de TOUS les namespaces, pas seulement ceux de la release
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi

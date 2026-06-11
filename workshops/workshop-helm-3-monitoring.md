@@ -281,7 +281,7 @@ kubectl run curl --rm -it --image=curlimages/curl --restart=Never -- \
 Dans Prometheus :
 
 ```promql
-rate(http_requests_total{job="demo-app"}[1m])
+  rate(http_requests_total{job="demo-app"}[1m])
 ```
 
 ---
