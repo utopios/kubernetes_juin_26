@@ -4,7 +4,7 @@ metadata:
   name: worker
   namespace: voting
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: worker
@@ -13,28 +13,50 @@ spec:
       labels:
         app: worker
     spec:
+      
       containers:
         - name: worker
-          image: mohamed1780/worker:latest
+          image: mohamed1780/worker:v1
+          env:
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: REDIS_PORT
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: POSTGRES_PORT
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: voting-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: voting-secrets
+                  key: POSTGRES_PASSWORD
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
             limits:
-              cpu: 200m
+              cpu: 500m
               memory: 256Mi
-          env:
-            - name: REDIS_HOST
-              value: "redis"
-            - name: REDIS_PORT
-              value: "6379"
-            - name: POSTGRES_HOST
-              value: "db"
-            - name: POSTGRES_PORT
-              value: "5432"
-            - name: POSTGRES_USER
-              value: "postgres"
-            - name: POSTGRES_PASSWORD
-              value: "postgres"
-            - name: POSTGRES_DB
-              value: "voting"

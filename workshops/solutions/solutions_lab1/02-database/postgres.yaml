@@ -9,10 +9,8 @@ spec:
   ports:
     - port: 5432
       targetPort: 5432
-  clusterIP: None
-
+  clusterIP: None  # Headless pour StatefulSet
 ---
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -36,11 +34,20 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_USER
-              value: "postgres"
+              valueFrom:
+                secretKeyRef:
+                  name: voting-secrets
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: "postgres"
+              valueFrom:
+                secretKeyRef:
+                  name: voting-secrets
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: "voting"
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: POSTGRES_DB
           resources:
             requests:
               cpu: 200m
@@ -48,4 +55,14 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
-            
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 1Gi

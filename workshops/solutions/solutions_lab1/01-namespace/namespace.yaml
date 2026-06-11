@@ -6,3 +6,36 @@ metadata:
     app: voting-app
     environment: dev
     team: platform
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  
+---
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: voting-quota
+  namespace: voting
+spec:
+  hard:
+    pods: "20"
+    requests.cpu: "4"
+    requests.memory: 8Gi
+
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: voting-limits
+  namespace: voting
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: 500m
+        memory: 512Mi
+      defaultRequest:
+        cpu: 100m
+        memory: 128Mi
+    

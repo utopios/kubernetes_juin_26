@@ -9,9 +9,8 @@ spec:
   ports:
     - port: 5000
       targetPort: 5000
-  
+  # ClusterIP (interne uniquement) — vote-ui l'appelle via http://vote:5000
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,18 +35,50 @@ spec:
     spec:
       containers:
         - name: vote
-          image: mohamed1780/vote:latest
+          image: mohamed1780/vote:v1
           ports:
             - containerPort: 5000
           env:
+            - name: OPTION_A
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: OPTION_A
+            - name: OPTION_B
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: OPTION_B
             - name: REDIS_HOST
-              value: "redis"
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: REDIS_HOST
             - name: REDIS_PORT
-              value: "6379"
+              valueFrom:
+                configMapKeyRef:
+                  name: voting-config
+                  key: REDIS_PORT
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            failureThreshold: 3
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
             limits:
-              cpu: 200m
+              cpu: 500m
               memory: 256Mi
